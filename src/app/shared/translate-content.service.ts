@@ -223,7 +223,7 @@ export class TranslateContentService {
         firebase:'',
       },
       projectImg:'assets/img/join-overlay.png',
-      githubUrl: 'https://github.com/MyCodeLeonard/portfolio.join',
+      githubUrl: 'https://github.com/LeonardFDev/portfolio.join',
       pageUrl: 'https://join.leonard-fritzmann.de'
     },
     projectTwo:{
@@ -235,7 +235,7 @@ export class TranslateContentService {
         css:'',
       },
       projectImg:'assets/img/overlay-el-pollo-loco.png',
-      githubUrl: 'https://github.com/MyCodeLeonard/portfolio.el_pollo_loco',
+      githubUrl: 'https://github.com/LeonardFDev/portfolio.el_pollo_loco',
       pageUrl: 'https://el-pollo-loco.leonard-fritzmann.de'
     },
     projectThree:{
@@ -248,7 +248,7 @@ export class TranslateContentService {
         firebase: '',
       },
       projectImg:'assets/img/placeholder.png',
-      githubUrl: 'https://github.com/MyCodeLeonard/portfolio.da_bubble',
+      githubUrl: 'https://github.com/LeonardFDev/portfolio.da_bubble',
       pageUrl: 'https://da-bubble.leonard-fritzmann.de'
     },
   
@@ -285,9 +285,16 @@ export class TranslateContentService {
       return localStorage.getItem('language');
     } 
     else{
-      localStorage.setItem('language', "EN");
-      return "EN";
+      localStorage.setItem('language', this.preferredLanguage());
+      this.setSelect(this.preferredLanguage());
+      return this.preferredLanguage();
     } 
+  }
+
+  preferredLanguage(){
+    const navigatorLanguage = navigator.language.split("-")[0].toUpperCase();
+    if(navigatorLanguage == "DE") return "DE";
+    else return "EN"
   }
 
   setSelect(selectInitials:"DE" | "EN"){
