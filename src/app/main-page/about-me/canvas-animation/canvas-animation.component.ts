@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, viewChild, ViewChild } from '@angular/core';
 import { Particle } from '../../../shared/classes/particale.class'
 
 @Component({
@@ -10,10 +10,13 @@ import { Particle } from '../../../shared/classes/particale.class'
 })
 export class CanvasAnimationComponent implements AfterViewInit{
   @ViewChild('profilePictureBg') canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('asciiPortrait') portraitRev!: ElementRef<HTMLPreElement>;
 
   canvas!:HTMLCanvasElement;
   ctx!: CanvasRenderingContext2D;
   particles: Particle[] = [];
+
+  portrait!: HTMLPreElement;
   
   symbols: string[] = [
     "{}", "</>", "()", "=>", "API", "SQL", "HTML", "CSS", "JS", "NODE", "PY"
@@ -22,21 +25,21 @@ export class CanvasAnimationComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     this.canvas = this.canvasRef?.nativeElement;
     this.ctx = this.canvas.getContext('2d')!;
-    this.canvas.width = this.canvas.clientHeight;
-    this.canvas.height = this.canvas.clientWidth;
 
-    this.init();
-    this.animate();
+    this.portrait = this.portraitRev.nativeElement;
 
     this.resizeCanvas();
+    this.animate();
+
+    this.asciiPortraitSizeAdjustment();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.resizeCanvas();
+    this.asciiPortraitSizeAdjustment();
   }
 
-  
   resizeCanvas(): void {
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientWidth;
@@ -57,5 +60,10 @@ export class CanvasAnimationComponent implements AfterViewInit{
       p.draw(this.ctx);
     });
     requestAnimationFrame(this.animate.bind(this));
+  }
+
+  asciiPortraitSizeAdjustment(){
+    let ratio = this.canvas.clientHeight / this.portrait.clientWidth
+    this.portrait.style.transform = `scale(${ratio})`;
   }
 }
